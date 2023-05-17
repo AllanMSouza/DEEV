@@ -10,7 +10,7 @@ Os seguintes datasets estão disponíveis para a avaliação:
 - Motion sense
 - UCI-HAR
 
-## Parametros para gerar docker-compose-file:
+## Parâmetros para gerar docker-compose-file:
 - `--clients` `-c`: Quantidade total de clientes
 - `--model` `-m`: Modelo de ML/DL para ser utilizado no treinamento (e.g., DNN, CNN, or Logistic Regression)
 - `--client-selection` `-`: Método para seleção de clientes (e.g., POC, DEEV)
@@ -22,7 +22,8 @@ Os seguintes datasets estão disponíveis para a avaliação:
 
 ## Criando arquivo de configuração:
 ```python
-python create_dockercompose.py --client-selection='DEEV' --dataset='MNIST' --model='DNN' --epochs=1 --round=10 --clients=50 
+python create_dockercompose.py --client-selection='DEEV' --dataset='MNIST' 
+--model='DNN' --epochs=1 --round=10 --clients=50 
 ```
 
 ## Como executar
