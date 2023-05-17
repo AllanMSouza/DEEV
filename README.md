@@ -31,6 +31,7 @@ python create_dockercompose.py --client-selection='DEEV' --dataset='MNIST'
 docker compose -f <compose-file.yaml> --compatibility up 
 ```
 ## Como citar
+```bibtex
 @inproceedings{deev,
  author = {Allan M. de Souza and Luiz Fernando Bittencourt and Eduardo Cerqueira and Antonio Loureiro and Leandro A. Villas},
  title = {Dispositivos, Eu Escolho Vocês: Seleção de Clientes Adaptativa para Comunicação Eficiente em Aprendizado Federado},
@@ -45,4 +46,4 @@ docker compose -f <compose-file.yaml> --compatibility up
  doi = {},
  url = {}
 }
-
+```
