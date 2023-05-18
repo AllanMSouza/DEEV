@@ -20,6 +20,8 @@ Os seguintes datasets estão disponíveis para a avaliação:
 - `--poc` `-`: Porcentagem de clientes para ser selecionados no Power-of-Choice
 - `--decay` `-`: Parâmetros para decaimento no DEEV
 
+É importante gerar novas imagens tanto para o Cliente quanto para o Servidor com o Dockerfile de ambos os diretórios. Em seguida, substitua a imagem no script `create_dockercompose.py`
+
 ## Criando arquivo de configuração:
 ```python
 python create_dockercompose.py --client-selection='DEEV' --dataset='MNIST' 
