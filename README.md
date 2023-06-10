@@ -34,18 +34,19 @@ docker compose -f <compose-file.yaml> --compatibility up
 ```
 ## Como citar
 ```bibtex
-@inproceedings{deev,
- author = {Allan M. de Souza and Luiz Fernando Bittencourt and Eduardo Cerqueira and Antonio Loureiro and Leandro A. Villas},
+@inproceedings{deev_sbrc_allan,
+ author = {Allan Souza and Luiz Bittencourt and Eduardo Cerqueira and Antonio Loureiro and Leandro Villas},
  title = {Dispositivos, Eu Escolho Vocês: Seleção de Clientes Adaptativa para Comunicação Eficiente em Aprendizado Federado},
  booktitle = {Anais do XLI Simpósio Brasileiro de Redes de Computadores e Sistemas Distribuídos},
- location = {Brasilia},
+ location = {Brasília/DF},
  year = {2023},
  keywords = {},
- issn = {},
- pages = {},
+ issn = {2177-9384},
+ pages = {1--14},
  publisher = {SBC},
  address = {Porto Alegre, RS, Brasil},
- doi = {},
- url = {}
+ doi = {10.5753/sbrc.2023.499},
+ url = {https://sol.sbc.org.br/index.php/sbrc/article/view/24525}
 }
+
 ```
