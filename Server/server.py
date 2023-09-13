@@ -9,6 +9,8 @@ from flwr.common import FitIns
 from flwr.server.strategy.aggregate import aggregate, weighted_loss_avg
 from flwr.common.logger import log
 
+from Server.server_utils import sample
+
 class FedServer(fl.server.strategy.FedAvg):
 
 	def __init__(self, aggregation_method, fraction_fit, num_clients, 
@@ -38,6 +40,8 @@ class FedServer(fl.server.strategy.FedAvg):
 		#FedLTA
 		self.decay_factor = decay
 
+		self.acc = []
+
 		#params
 		if self.aggregation_method == 'POC':
 			self.solution_name = f"{solution_name}-{aggregation_method}-{self.perc_of_clients}"
@@ -45,7 +49,7 @@ class FedServer(fl.server.strategy.FedAvg):
 		elif self.aggregation_method == 'DEEV': 
 			self.solution_name = f"{solution_name}-{aggregation_method}-{self.decay_factor}"
 
-		elif self.aggregation_method == 'None':
+		else:
 			self.solution_name = f"{solution_name}-{aggregation_method}"
 
 
@@ -74,14 +78,31 @@ class FedServer(fl.server.strategy.FedAvg):
 
 		fit_ins = FitIns(parameters, config)
 
+
 		# Sample clients
 		sample_size, min_num_clients = self.num_fit_clients(
 		    client_manager.num_available()
 		)
-		clients = client_manager.sample(
-		    num_clients=sample_size, min_num_clients=min_num_clients
-		)
 
+		clients = sample(clients = client_manager.clients,
+				   num_clients=sample_size,
+				   min_num_clients=min_num_clients,
+				   selection = self.aggregation_method,
+				   POC_perc_of_clients = self.perc_of_clients,
+				   decay_factor = self.decay_factor,
+				   acc = self.acc,
+				   server_round = server_round,)
+
+		# clients = client_manager.sample(
+		#     num_clients=sample_size, min_num_clients=min_num_clients,
+		# 	selection = self.aggregation_method,
+		# 	POC_perc_of_clients = self.perc_of_clients,
+		# 	decay_factor = self.decay_factor,
+		# 	acc = self.acc,
+		# 	server_round = server_round,
+		# )
+
+		print('pause')
 		# Return client/config pairs
 		return [(client, fit_ins) for client in clients]
 
@@ -98,12 +119,13 @@ class FedServer(fl.server.strategy.FedAvg):
 			self.clients_info[client_id] = {'transmittion_prob' : transmittion_prob , 
 											'cpu_cost': cpu_cost}
 
-			if self.aggregation_method not in ['POC', 'DEEV'] or int(server_round) <= 1:
-				weights_results.append((fl.common.parameters_to_ndarrays(fit_res.parameters), fit_res.num_examples))
-
-			else:
-				if client_id in self.selected_clients:
-					weights_results.append((fl.common.parameters_to_ndarrays(fit_res.parameters), fit_res.num_examples))
+			weights_results.append((fl.common.parameters_to_ndarrays(fit_res.parameters), fit_res.num_examples))
+			#if self.aggregation_method not in ['POC', 'DEEV'] or int(server_round) <= 1:
+			#	weights_results.append((fl.common.parameters_to_ndarrays(fit_res.parameters), fit_res.num_examples))
+#
+			#else:
+			#	if client_id in self.selected_clients:
+			#		weights_results.append((fl.common.parameters_to_ndarrays(fit_res.parameters), fit_res.num_examples))
 
 		#print(f'LEN AGGREGATED PARAMETERS: {len(weights_results)}')
 		parameters_aggregated = fl.common.ndarrays_to_parameters(aggregate(weights_results))
@@ -135,7 +157,7 @@ class FedServer(fl.server.strategy.FedAvg):
 		clients = client_manager.sample(
 			num_clients=sample_size, min_num_clients=min_num_clients
 		)
-
+		print('pause')
 		# Return client/config pairs
 		return [(client, evaluate_ins) for client in clients]
 
@@ -152,6 +174,7 @@ class FedServer(fl.server.strategy.FedAvg):
 		self.list_of_clients    = []
 		self.list_of_accuracies = []
 		accs                    = []
+		self.acc = []
 
 		
 		for response in results:
@@ -175,6 +198,8 @@ class FedServer(fl.server.strategy.FedAvg):
 
 		self.list_of_clients    = [str(client[0]) for client in local_list_clients]
 		self.list_of_accuracies = [float(client[1]) for client in local_list_clients]
+
+		self.acc = accs.copy()
 
 		accs.sort()
 		self.average_accuracy   = np.mean(accs)

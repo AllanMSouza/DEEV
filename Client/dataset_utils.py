@@ -36,10 +36,10 @@ class ManageDatasets():
 
 
 	def load_MotionSense(self):
-		with open(f'data/motion_sense/{self.cid+1}_train.pickle', 'rb') as train_file:
+		with open(f'Client/data/motion_sense/{self.cid+1}_train.pickle', 'rb') as train_file:
 			train = pickle.load(train_file)
 	    
-		with open(f'data/motion_sense/{self.cid+1}_test.pickle', 'rb') as test_file:
+		with open(f'Client/data/motion_sense/{self.cid+1}_test.pickle', 'rb') as test_file:
 			test = pickle.load(test_file)
 	        
 		y_train = train['activity'].values

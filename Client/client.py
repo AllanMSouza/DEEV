@@ -8,8 +8,8 @@ import os
 import time
 import sys
 
-from dataset_utils import ManageDatasets
-from model_definition import ModelCreation
+from Client.dataset_utils import ManageDatasets
+from Client.model_definition import ModelCreation
 
 
 import warnings
@@ -64,7 +64,7 @@ class FedClient(fl.client.NumPyClient):
 		elif self.aggregation_method == 'DEEV': 
 			self.solution_name = f"{solution_name}-{aggregation_method}-{self.decay}"
 
-		elif self.aggregation_method == 'None':
+		else:
 			self.solution_name = f"{solution_name}-{aggregation_method}"
 
 		self.x_train, self.y_train, self.x_test, self.y_test = self.load_data(self.dataset, n_clients=self.n_clients)
