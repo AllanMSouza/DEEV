@@ -9,15 +9,15 @@ def load_motionsense_cli_data(cid, data_dir):
 
     y_train = train['activity'].values
     train.drop('activity', axis=1, inplace=True)
-    train['subject'] /= 24.0
-    train['trial'] /= 16.0
+    train.drop('subject', axis=1, inplace=True)
+    train.drop('trial', axis=1, inplace=True)
 
     x_train = train.values
 
     y_test = test['activity'].values
     test.drop('activity', axis=1, inplace=True)
-    test['subject'] /= 24.0
-    test['trial'] /= 16.0
+    test.drop('subject', axis=1, inplace=True)
+    test.drop('trial', axis=1, inplace=True)
 
     x_test = test.values
 

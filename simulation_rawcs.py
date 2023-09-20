@@ -31,7 +31,7 @@ NETWORK_PROFILES='Server/devices_profiles/sim_1_num_clients_24_num_rounds_250.pk
 SIM_IDX=1
 DATASET_NAME='MotionSense'
 DATASET_PATH='/home/gabrieltalasso/DEEV/Client/data/motion_sense'
-NUM_ROUNDS=10
+NUM_ROUNDS=50
 D_TEMP_SET_SIZE=48
 EXPLORATION_FACTOR=0.9
 STEP_WINDOW=20
@@ -54,7 +54,7 @@ for cid in range(NUM_CLIENTS):
     samples_per_client.append(len(x_train))
 
 def funcao_cliente(cid):
-	return FedCli(cid = int(cid))
+	return FedCli(cid = int(cid), n_clients = NUM_CLIENTS, model_name = 'DNN', dataset_name = DATASET_NAME, epochs = 1)
 
 history = fl.simulation.start_simulation(client_fn=funcao_cliente, 
 								num_clients=n_clients, 
@@ -90,3 +90,8 @@ history = fl.simulation.start_simulation(client_fn=funcao_cliente,
                                                 target_accuracy = TARGET_ACCURACY,
                                                 link_quality_lower_lim = LINK_QUALITY_LOWER_LIM),
 								config=fl.server.ServerConfig(NUM_ROUNDS))
+
+#passo 1: fazer funcionar no simulation
+#passo 2: fazer funcionar sem a lista de selected clients
+#passo 3: rodar com cliente genérico
+#passo 4: fazer analise dos resultados

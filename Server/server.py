@@ -14,7 +14,8 @@ from Server.server_utils import sample
 class FedServer(fl.server.strategy.FedAvg):
 
 	def __init__(self, aggregation_method, fraction_fit, num_clients, 
-					decay=0, perc_of_clients=0, dataset='', solution_name='', model_name=''):
+					decay=0, perc_of_clients=0, dataset='', solution_name='', model_name='', 
+					rawcs_params = {}):
 		
 		self.aggregation_method = aggregation_method
 		self.num_clients        = num_clients
@@ -41,6 +42,8 @@ class FedServer(fl.server.strategy.FedAvg):
 		self.decay_factor = decay
 
 		self.acc = []
+
+		self.rawcs_params = rawcs_params
 
 		#params
 		if self.aggregation_method == 'POC':
@@ -91,7 +94,8 @@ class FedServer(fl.server.strategy.FedAvg):
 				   POC_perc_of_clients = self.perc_of_clients,
 				   decay_factor = self.decay_factor,
 				   acc = self.acc,
-				   server_round = server_round,)
+				   server_round = server_round,
+				   rawcs_params=self.rawcs_params)
 
 		# clients = client_manager.sample(
 		#     num_clients=sample_size, min_num_clients=min_num_clients,

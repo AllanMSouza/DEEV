@@ -15,6 +15,8 @@ from flwr.server.strategy.aggregate import aggregate, weighted_loss_avg
 from Server.battery import get_energy_by_completion_time, idle_power_deduction
 from Server.model_builder import create_DNN
 
+from Client.model_definition import ModelCreation
+
 
 class Rawcs_sp(fl.server.strategy.Strategy):
     def __init__(self, num_clients: int, num_classes: int, fit_fraction: float, eval_fraction: float,
@@ -57,7 +59,8 @@ class Rawcs_sp(fl.server.strategy.Strategy):
             self, client_manager: ClientManager
     ) -> Optional[Parameters]:
         """Initialize global model parameters."""
-        self.net = create_DNN(self.input_shape, self.num_classes)
+        #self.net = create_DNN(self.input_shape, self.num_classes)
+        self.net = ModelCreation().create_DNN(self.input_shape, self.num_classes)
         network_profiles = None
 
         with open(self.network_profiles, 'rb') as file:

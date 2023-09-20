@@ -90,7 +90,6 @@ class FedClient(fl.client.NumPyClient):
 		return self.model.get_weights()
 
 
-
 	def fit(self, parameters, config):
 		selected_clients   = []
 		trained_parameters = []

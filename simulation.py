@@ -3,7 +3,10 @@ from Server.server import FedServer
 import pickle
 import flwr as fl
 import os
+import numpy as np
 
+from Client.data_loader import get_dataset
+from rawcs_utils import get_rawcs_params
 try:
 	os.remove('./results/history_simulation.pickle')
 except FileNotFoundError:
@@ -12,8 +15,8 @@ except FileNotFoundError:
 n_clients = 24
 n_rounds = 50
 
-sol_name = 'teste'
-agg_method = 'DEEV'
+sol_name = 'teste2'
+agg_method = 'Rawcs'
 perc_clients = 0.1
 dec = 0.5
 
@@ -28,6 +31,8 @@ def funcao_cliente(cid):
 				 decay                 = dec,
 				 transmittion_threshold = 0.2)
 
+rawcs_params = get_rawcs_params()
+
 history = fl.simulation.start_simulation(client_fn=funcao_cliente, 
 								num_clients=n_clients, 
 								strategy=FedServer(aggregation_method=agg_method,
@@ -36,5 +41,6 @@ history = fl.simulation.start_simulation(client_fn=funcao_cliente,
 					                                decay=dec, perc_of_clients=perc_clients, 
 													dataset='MotionSense', 
 													solution_name = sol_name,
-													model_name='DNN'),
+													model_name='DNN', 
+													rawcs_params=rawcs_params),
 								config=fl.server.ServerConfig(n_rounds))
