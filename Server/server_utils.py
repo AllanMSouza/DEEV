@@ -35,17 +35,14 @@ from Client.model_definition import ModelCreation
 def sample(
         clients,
         num_clients: int,
-        min_num_clients: Optional[int] = None,
         criterion: Optional[Criterion] = None,
-        CL = True,
         selection = None,
         acc = None,
         decay_factor = None,
         server_round = None,
-        idx = None,
-        cluster_round = 0,
         POC_perc_of_clients = 0.5,
-        rawcs_params = {}
+        rawcs_params = {}, 
+        Rawcs_Manager = None
     ) -> List[ClientProxy]:
         
         # Sample clients which meet the criterion
@@ -91,12 +88,15 @@ def sample(
                 sampled_cids = selected_clients.copy()
 
         if selection == 'Rawcs':
-            M = ManageRawcs(**rawcs_params)
-            selected_cids = M.sample_fit()
-            selected_cids = M.filter_clients_to_train_by_predicted_behavior(selected_cids, server_round)
+            if server_round == 1:
+                Rawcs_Manager = ManageRawcs(**rawcs_params)
+            selected_cids = Rawcs_Manager.sample_fit()
+            selected_cids = Rawcs_Manager.filter_clients_to_train_by_predicted_behavior(selected_cids, server_round)
             for j in range(len(selected_cids)):
                 selected_cids[j] = str(selected_cids[j])
             sampled_cids = selected_cids.copy()
+
+            return Rawcs_Manager, [clients[cid] for cid in sampled_cids]
 
         if selection == 'All':
             sampled_cids = random.sample(available_cids, num_clients)  
@@ -117,7 +117,7 @@ class ManageRawcs():
 
         clients_training_time = []
 
-        self.client_info = {}
+        self.clients_info = {}
 
         with open(self.devices_profile, 'r') as file:
             json_dict = json.load(file)
@@ -211,6 +211,12 @@ class ManageRawcs():
             client_latency = self.clients_info[cid]["total_train_latency"]
             client_consumed_energy = get_energy_by_completion_time(comp_latency, comm_latency, avg_joules)
             new_battery_value = self.clients_info[cid]['battery'] - client_consumed_energy
+
+            filename = f"logs/clients_infos.csv"
+            os.makedirs(os.path.dirname(filename), exist_ok=True)
+
+            with open(filename, 'a') as batt_eval:
+                batt_eval.write(f"{server_round}, {cid}, {new_battery_value}\n")
 
             if self.clients_info[cid]['battery'] >= self.clients_info[cid]['min_battery'] and new_battery_value < \
                     self.clients_info[cid]['min_battery']:

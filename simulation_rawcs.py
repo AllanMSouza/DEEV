@@ -91,7 +91,14 @@ history = fl.simulation.start_simulation(client_fn=funcao_cliente,
                                                 link_quality_lower_lim = LINK_QUALITY_LOWER_LIM),
 								config=fl.server.ServerConfig(NUM_ROUNDS))
 
-#passo 1: fazer funcionar no simulation
-#passo 2: fazer funcionar sem a lista de selected clients
-#passo 3: rodar com cliente genérico
-#passo 4: fazer analise dos resultados
+#testar se as infos dos clientes estao mudando com tempo 
+# - todo inicio de round as informações dos clientes sao lidas diretamento dos profiles, ou seja, elas ainda nao estao sendo alteradas
+# - um proximo passo seria fazer os clientes reescreverem esse profile todos os rounds
+
+
+#implemntar bateria vinso de um arquivo externo, nao sendo simulada no servidor
+#calcular os consumos com o POC e o DEEV tambem 
+
+
+
+#

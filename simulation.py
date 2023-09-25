@@ -15,7 +15,7 @@ except FileNotFoundError:
 n_clients = 24
 n_rounds = 50
 
-sol_name = 'teste2'
+sol_name = 'teste4'
 agg_method = 'Rawcs'
 perc_clients = 0.1
 dec = 0.5

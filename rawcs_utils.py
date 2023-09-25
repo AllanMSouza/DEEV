@@ -70,7 +70,6 @@ def get_rawcs_params():
     'clients_info': {},
     'time_percentile' : 95,
     'comp_latency_lim' : np.inf,
-    'clients_info' : {},
     'clients_last_round' : [],
     'max_training_latency' : 0.0,
     'limit_relationship_max_latency' : 0}

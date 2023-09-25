@@ -44,6 +44,7 @@ class FedServer(fl.server.strategy.FedAvg):
 		self.acc = []
 
 		self.rawcs_params = rawcs_params
+		self.Rawcs_Manager = None
 
 		#params
 		if self.aggregation_method == 'POC':
@@ -87,9 +88,21 @@ class FedServer(fl.server.strategy.FedAvg):
 		    client_manager.num_available()
 		)
 
-		clients = sample(clients = client_manager.clients,
+		if self.aggregation_method == 'Rawcs':
+
+			self.Rawcs_Manager, clients = sample(clients = client_manager.clients,
+					num_clients=sample_size,
+					selection = self.aggregation_method,
+					POC_perc_of_clients = self.perc_of_clients,
+					decay_factor = self.decay_factor,
+					acc = self.acc,
+					server_round = server_round,
+					rawcs_params=self.rawcs_params, 
+					Rawcs_Manager = self.Rawcs_Manager)
+
+		else:
+			clients = sample(clients = client_manager.clients,
 				   num_clients=sample_size,
-				   min_num_clients=min_num_clients,
 				   selection = self.aggregation_method,
 				   POC_perc_of_clients = self.perc_of_clients,
 				   decay_factor = self.decay_factor,
