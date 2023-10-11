@@ -90,7 +90,7 @@ def sample(
         if selection == 'Rawcs':
             if server_round == 1:
                 Rawcs_Manager = ManageRawcs(**rawcs_params)
-            selected_cids = Rawcs_Manager.sample_fit()
+            selected_cids = Rawcs_Manager.sample_fit(server_round)
             selected_cids = Rawcs_Manager.filter_clients_to_train_by_predicted_behavior(selected_cids, server_round)
             for j in range(len(selected_cids)):
                 selected_cids[j] = str(selected_cids[j])
@@ -109,39 +109,43 @@ class ManageRawcs():
         self.__dict__.update(iterable, **kwargs)
     
 
-    def sample_fit(self):
-        network_profiles = None
+    def sample_fit(self, server_round):
 
-        with open(self.network_profiles, 'rb') as file:
-            network_profiles = pickle.load(file)
+        if server_round == 1:
 
-        clients_training_time = []
+            network_profiles = None
 
-        self.clients_info = {}
+            with open(self.network_profiles, 'rb') as file:
+                network_profiles = pickle.load(file)
 
-        with open(self.devices_profile, 'r') as file:
-            json_dict = json.load(file)
-            for key in json_dict.keys():
-                self.clients_info[int(key)] = json_dict[key]
-                self.clients_info[int(key)]['perc_budget_10'] = False
-                self.clients_info[int(key)]['perc_budget_20'] = False
-                self.clients_info[int(key)]['perc_budget_30'] = False
-                self.clients_info[int(key)]['perc_budget_40'] = False
-                self.clients_info[int(key)]['perc_budget_50'] = False
-                self.clients_info[int(key)]['perc_budget_60'] = False
-                self.clients_info[int(key)]['perc_budget_70'] = False
-                self.clients_info[int(key)]['perc_budget_80'] = False
-                self.clients_info[int(key)]['perc_budget_90'] = False
-                self.clients_info[int(key)]['perc_budget_100'] = False
-                self.clients_info[int(key)]['initial_battery'] = self.clients_info[int(key)]['battery']
-                if self.clients_info[int(key)]['total_train_latency'] > self.max_training_latency:
-                    self.max_training_latency = self.clients_info[int(key)]['total_train_latency']
-                clients_training_time.append(self.clients_info[int(key)]['total_train_latency'])
-                self.clients_info[int(key)]['network_profile'] = network_profiles[int(key)]
+            clients_training_time = []
 
-        self.comp_latency_lim = np.percentile(clients_training_time, self.time_percentile)
+            self.clients_info = {}
 
-        self.limit_relationship_max_latency = self.comp_latency_lim / self.max_training_latency
+            with open(self.devices_profile, 'r') as file:
+                json_dict = json.load(file)
+                for key in json_dict.keys():
+                    self.clients_info[int(key)] = json_dict[key]
+                    self.clients_info[int(key)]['perc_budget_10'] = False
+                    self.clients_info[int(key)]['perc_budget_20'] = False
+                    self.clients_info[int(key)]['perc_budget_30'] = False
+                    self.clients_info[int(key)]['perc_budget_40'] = False
+                    self.clients_info[int(key)]['perc_budget_50'] = False
+                    self.clients_info[int(key)]['perc_budget_60'] = False
+                    self.clients_info[int(key)]['perc_budget_70'] = False
+                    self.clients_info[int(key)]['perc_budget_80'] = False
+                    self.clients_info[int(key)]['perc_budget_90'] = False
+                    self.clients_info[int(key)]['perc_budget_100'] = False
+                    self.clients_info[int(key)]['initial_battery'] = self.clients_info[int(key)]['battery']
+                    if self.clients_info[int(key)]['total_train_latency'] > self.max_training_latency:
+                        self.max_training_latency = self.clients_info[int(key)]['total_train_latency']
+                    clients_training_time.append(self.clients_info[int(key)]['total_train_latency'])
+                    self.clients_info[int(key)]['network_profile'] = network_profiles[int(key)]
+
+            self.comp_latency_lim = np.percentile(clients_training_time, self.time_percentile)
+
+            self.limit_relationship_max_latency = self.comp_latency_lim / self.max_training_latency
+            
         selected_cids = []
         clients_with_resources = []
 

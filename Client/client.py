@@ -80,7 +80,7 @@ class FedClient(fl.client.NumPyClient):
 			return ModelCreation().create_LogisticRegression(input_shape, 6)
 
 		elif self.model_name == 'DNN':
-			return ModelCreation().create_DNN(input_shape, 6)
+			return ModelCreation().create_DNN(input_shape, 8)
 
 		elif self.model_name == 'CNN':
 			return ModelCreation().create_CNN(input_shape, 6)

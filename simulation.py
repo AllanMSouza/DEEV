@@ -12,13 +12,14 @@ try:
 except FileNotFoundError:
 	pass
 
-n_clients = 24
+n_clients = 60
 n_rounds = 50
 
-sol_name = 'teste4'
-agg_method = 'Rawcs'
+sol_name = 'POC'
+agg_method = 'POC'
 perc_clients = 0.1
-dec = 0.5
+dec = 0.1
+dataset = 'ExtraSensory'
 
 def funcao_cliente(cid):
 	return FedClient(cid = int(cid), n_clients=n_clients, epochs=1, 
@@ -26,7 +27,7 @@ def funcao_cliente(cid):
 				 client_selection      = False, 
 				 solution_name = sol_name,
 				 aggregation_method    = agg_method,
-				 dataset               = 'MotionSense',
+				 dataset               = dataset,
 				 perc_of_clients       = perc_clients,
 				 decay                 = dec,
 				 transmittion_threshold = 0.2)
@@ -39,7 +40,7 @@ history = fl.simulation.start_simulation(client_fn=funcao_cliente,
 			   										fraction_fit = 1, 
 													num_clients = n_clients, 
 					                                decay=dec, perc_of_clients=perc_clients, 
-													dataset='MotionSense', 
+													dataset=dataset, 
 													solution_name = sol_name,
 													model_name='DNN', 
 													rawcs_params=rawcs_params),

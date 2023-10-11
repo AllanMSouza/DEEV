@@ -95,10 +95,11 @@ history = fl.simulation.start_simulation(client_fn=funcao_cliente,
 # - todo inicio de round as informações dos clientes sao lidas diretamento dos profiles, ou seja, elas ainda nao estao sendo alteradas
 # - um proximo passo seria fazer os clientes reescreverem esse profile todos os rounds
 
+# - PROXIMO PASSO - olhar para a função no github: initizalize parameters 
+# e ler o arquivo de profiles apenas no primeiro round
+
 
 #implemntar bateria vinso de um arquivo externo, nao sendo simulada no servidor
 #calcular os consumos com o POC e o DEEV tambem 
-
-
 
 #
