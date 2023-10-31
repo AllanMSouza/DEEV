@@ -46,12 +46,11 @@ for sol in solutions:
 plt.show()
 
 
-
-
 paths = {'FedAvg'   :'logs/ExtraSensory/FedAvg-All/DNN/evaluate_client.csv',
          'DEEV-0.1'   :'logs/ExtraSensory/deev-DEEV-0.1/DNN/evaluate_client.csv',
          'POC-0.1'   :'logs/ExtraSensory/POC-POC-0.1/DNN/evaluate_client.csv',
-         'RAWCS': 'logs/ExtraSensory/RAWCS-RAWCS/DNN/evaluate_client.csv'}
+         'POC-0.5'   :'logs/ExtraSensory/POC-POC-0.5/DNN/evaluate_client.csv',
+         'RAWCS': 'logs/ExtraSensory/Rawcs-Rawcs/DNN/evaluate_client.csv'}
 
 solutions = paths.keys()
 for sol in solutions:

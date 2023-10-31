@@ -15,9 +15,9 @@ except FileNotFoundError:
 n_clients = 60
 n_rounds = 50
 
-sol_name = 'RAWCS'
-agg_method = 'RAWCS'
-perc_clients = 0.1
+sol_name = 'POC'
+agg_method = 'POC'
+perc_clients = 0.5
 dec = 0.1
 dataset = 'ExtraSensory'
 
