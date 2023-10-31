@@ -15,8 +15,8 @@ except FileNotFoundError:
 n_clients = 60
 n_rounds = 50
 
-sol_name = 'POC'
-agg_method = 'POC'
+sol_name = 'RAWCS'
+agg_method = 'RAWCS'
 perc_clients = 0.1
 dec = 0.1
 dataset = 'ExtraSensory'
@@ -32,7 +32,7 @@ def funcao_cliente(cid):
 				 decay                 = dec,
 				 transmittion_threshold = 0.2)
 
-rawcs_params = get_rawcs_params()
+rawcs_params = get_rawcs_params(dataset = dataset)
 
 history = fl.simulation.start_simulation(client_fn=funcao_cliente, 
 								num_clients=n_clients, 
